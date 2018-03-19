@@ -176,8 +176,8 @@
     function initBuffers() {
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+	var z = 1.0;
 	var xy = 0.41;
-	var z = -1.0;
         vertices = [
             // Front face
             -xy, -xy,  z,
@@ -231,7 +231,7 @@
 
 	//If want a quad occupy the full canvas, this should match the vertex.
         //mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
-        //mat4.scale(mvMatrix, [1.0, 1.0, 1.0]);
+        mat4.scale(mvMatrix, [1.0, 1.0, -1.0]);
 
         mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
         mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
