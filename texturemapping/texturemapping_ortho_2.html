@@ -135,7 +135,7 @@
             handleLoadedTexture(neheTexture)
         }
 
-        neheTexture.image.src = ".\bird.jpg";
+        neheTexture.image.src = "gorilla.png";
     }
 
 
@@ -174,10 +174,10 @@
 	var xy2 = 500.0;
 	var z = -1.0;
         vertices = [
-            -xy, -xy, z,
-            xy, xy2, z,
-            xy2, xy2, z,
+            xy, xy, z,
             xy2, xy, z,
+            xy2, xy2, z,
+            xy, xy2, z,
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
