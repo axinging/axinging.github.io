@@ -45,12 +45,24 @@
     var topp;
     var near = 0.1;
     var far = 100;
+    var z = -1.0;
 
     function initLRBT() {
-        left = 0;
-        right = gl.viewportWidth;
-        bottom = -gl.viewportHeight;
-        topp = 0;
+        left = -gl.viewportWidth/2;
+        right = gl.viewportWidth/2;
+        bottom = -gl.viewportHeight/2
+        topp = gl.viewportHeight/2;
+    }
+
+    var vertices;
+
+    function initVertices() {
+        vertices = [
+            left, bottom, z,
+            right, bottom, z,
+            right, topp, z,
+            left, topp, z,
+        ];
     }
 
     function initGL(canvas) {
@@ -65,6 +77,7 @@
         }
         initLRBT();
     }
+
 
     function getShader(gl, id) {
         var shaderScript = document.getElementById(id);
@@ -97,8 +110,10 @@
             alert(gl.getShaderInfoLog(shader));
             return null;
         }
+
         return shader;
     }
+
 
     var shaderProgram;
 
@@ -127,6 +142,7 @@
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
         shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
     }
+
 
     function handleLoadedTexture(texture) {
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -180,23 +196,17 @@
     var cubeVertexTextureCoordBuffer;
     var cubeVertexIndexBuffer;
 
-
     function initBuffers() {
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
-	var z = -1.0;
-        vertices = [
-            left, bottom, z,
-            right, bottom, z,
-            right, topp, z,
-            left, topp, z,
-        ];
-	
+        initVertices();
+
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
         cubeVertexPositionBuffer.numItems = 24;
 
+   
         cubeVertexTextureCoordBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
         var textureCoords = [
@@ -222,14 +232,10 @@
 
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-	//ortho(out, left, right, bottom, top, near, far);
 	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
-	//mat4.ortho(0, gl.viewportWidth, 0, gl.viewportHeight, 0.1, 100.0,pMatrix);
-
-
 	mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
 
         mat4.identity(mvMatrix);
