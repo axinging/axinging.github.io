@@ -66,7 +66,6 @@
         if (!gl) {
             alert("Could not initialise WebGL, sorry :-(");
         }
-        initLRBT();
     }
 
 
@@ -164,16 +163,10 @@
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
-        vertices = [
-            left, bottom, z,
-            right, bottom, z,
-            right, topp, z,
-            left, topp, z,
-        ];
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
-        cubeVertexPositionBuffer.numItems = 24;
+        cubeVertexPositionBuffer.numItems = 4;
 
         cubeVertexIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
@@ -213,6 +206,8 @@
         var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
         initShaders();
+        initLRBT();
+        initVertices();
         initBuffers();
  	drawScene();
         gl.clearColor(0.0, 0.0, 0.0, 1.0);

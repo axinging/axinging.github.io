@@ -196,8 +196,6 @@
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
-        initVertices();
-
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
         cubeVertexPositionBuffer.numItems = 24;
@@ -263,6 +261,8 @@
         var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
         initShaders();
+        initLRBT();
+        initVertices();
         initBuffers();
         initTexture();
 
