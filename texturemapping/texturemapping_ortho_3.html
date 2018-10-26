@@ -1,5 +1,6 @@
+<!-- Original fiel is from http://learningwebgl.com/-->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>3D Projectin</title>
+<title>3D Projectin - Ortho "1"</title>
 
 
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
@@ -189,21 +190,14 @@
 	var xy2 = 500.0-offset;
 	var z = -1.0;
 
-		initLRBT();
-
+        initLRBT();
         vertices = [
-            left, bottom,  z,
-            right, bottom,  z,
-            right, topp,  z,
-            left, topp,  z,
+            left, bottom, z,
+            right, bottom, z,
+            right, topp, z,
+            left, topp, z,
         ];
-	/*
-        vertices = [
-            xy, xy, z,
-            xy2, xy, z,
-            xy2, xy2, z,
-            xy, xy2, z,
-        ];*/
+
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
         cubeVertexPositionBuffer.numItems = 24;
@@ -236,9 +230,9 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	//mat4.ortho(0, gl.viewportWidth-offset, 0, gl.viewportHeight-offset, 0.1, 100.0,pMatrix);
 
-		initLRBT();
-
+	initLRBT();
 	mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
+
         mat4.identity(mvMatrix);
 
 	//If want a quad occupy the full canvas, this should match the vertex.
@@ -262,7 +256,7 @@
 
 
     function webGLStart() {
-        var canvas = document.getElementById("lesson05-canvas");
+        var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
         initShaders();
         initBuffers();
@@ -280,5 +274,5 @@
 
 
 <body onload="webGLStart();">
-    <canvas id="lesson05-canvas" style="border: none;" width="500" height="500"></canvas>
+    <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
 </body></html>

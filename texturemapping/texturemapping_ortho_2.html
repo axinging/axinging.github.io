@@ -1,5 +1,6 @@
+<!-- Original fiel is from http://learningwebgl.com/-->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>3D Projectin</title>
+<title>3D Projectin - Ortho "1"</title>
 
 
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
@@ -268,7 +269,7 @@
 
 
     function webGLStart() {
-        var canvas = document.getElementById("lesson05-canvas");
+        var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
         initShaders();
         initBuffers();
@@ -286,5 +287,5 @@
 
 
 <body onload="webGLStart();">
-    <canvas id="lesson05-canvas" style="border: none;" width="500" height="500"></canvas>
+    <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
 </body></html>

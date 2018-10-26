@@ -1,5 +1,6 @@
+<!-- Original fiel is from http://learningwebgl.com/-->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>3D Projectin</title>
+<title>3D Projectin - Ortho "1"</title>
 
 
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
@@ -188,19 +189,12 @@
 	initLRBT();
 
         vertices = [
-            left, bottom,  z,
-            right, bottom,  z,
-            right, topp,  z,
-            left, topp,  z,
+            left, bottom, z,
+            right, bottom, z,
+            right, topp, z,
+            left, topp, z,
         ];
-	/*
-        vertices = [
-            -xy, -xy,  z,
-             xy, -xy,  z,
-             xy,  xy,  z,
-            -xy,  xy,  z,
-        ];
-	*/
+
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
         cubeVertexPositionBuffer.numItems = 24;
@@ -232,10 +226,6 @@
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-	// ortho(out, left, right, bottom, topp, near, far);
-
-
 	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
 	initLRBT();
 
@@ -264,7 +254,7 @@
 
 
     function webGLStart() {
-        var canvas = document.getElementById("lesson05-canvas");
+        var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
         initShaders();
         initBuffers();
@@ -282,5 +272,5 @@
 
 
 <body onload="webGLStart();">
-    <canvas id="lesson05-canvas" style="border: none;" width="500" height="500"></canvas>
+    <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
 </body></html>
