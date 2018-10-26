@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="/resources/glMatrix-0.9.5.min.js"></script>
 <script type="text/javascript" src="/resources/webgl-utils.js"></script>
+<script type="text/javascript" src="/library/common.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -48,10 +49,6 @@
     var fovY = 45;
     var near = 0.5;
     var far = 100;
-
-    function tan(degrees) {
-        return Math.tan(degrees * Math.PI/180);
-    }
 
     function initLRBT() {
 	aspect = gl.viewportWidth/gl.viewportHeight;
