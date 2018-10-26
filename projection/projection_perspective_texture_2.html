@@ -82,45 +82,7 @@
         ];
     }
 
-    function initGL(canvas) {
-        try {
-            gl = canvas.getContext("experimental-webgl");
-            gl.viewportWidth = canvas.width;
-            gl.viewportHeight = canvas.height;
-        } catch (e) {
-        }
-        if (!gl) {
-            alert("Could not initialise WebGL, sorry :-(");
-        }
-    }
-
     var shaderProgram;
-
-    function initShaders() {
-        var fragmentShader = getShader(gl, "shader-fs");
-        var vertexShader = getShader(gl, "shader-vs");
-
-        shaderProgram = gl.createProgram();
-        gl.attachShader(shaderProgram, vertexShader);
-        gl.attachShader(shaderProgram, fragmentShader);
-        gl.linkProgram(shaderProgram);
-
-        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-            alert("Could not initialise shaders");
-        }
-
-        gl.useProgram(shaderProgram);
-
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-        gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-    }
 
 
     function handleLoadedTexture(texture) {
@@ -135,7 +97,7 @@
 
     var neheTexture;
 
-    function initTexture() {
+    function initTexture(gl) {
         neheTexture = gl.createTexture();
         neheTexture.image = new Image();
         neheTexture.image.onload = function () {
@@ -144,7 +106,6 @@
 
         neheTexture.image.src = "/resources/gorilla.png";
     }
-
 
     var mvMatrix = mat4.create();
     var mvMatrixStack = [];
@@ -243,7 +204,7 @@
     function webGLStart() {
         var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
-        initShaders();
+        shaderProgram = initShadersTexture(gl);
         initLRBT();
         initVertices();
         initBuffers();
