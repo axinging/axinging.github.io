@@ -4,7 +4,7 @@
 
 
 <script type="text/javascript" src="/resources/glMatrix-0.9.5.min.js"></script>
-<script type="text/javascript" src="/resources//resources/gorilla.png"></script>
+<script type="text/javascript" src="/resources/webgl-utils.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -161,7 +161,7 @@
             handleLoadedTexture(neheTexture)
         }
 
-        neheTexture.image.src = "gorilla.png";
+        neheTexture.image.src = "/resources/gorilla.png";
     }
 
     var mvMatrix = mat4.create();
