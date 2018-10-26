@@ -47,10 +47,10 @@
     var far = 100;
 
     function initLRBT() {
-	 left = 0;
-         right = gl.viewportWidth;
-	 bottom = -gl.viewportHeight;
-	 topp = 0;
+        left = 0;
+        right = gl.viewportWidth;
+        bottom = -gl.viewportHeight;
+        topp = 0;
     }
 
     function initGL(canvas) {
@@ -100,7 +100,6 @@
         return shader;
     }
 
-
     var shaderProgram;
 
     function initShaders() {
@@ -128,7 +127,6 @@
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
         shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
     }
-
 
     function handleLoadedTexture(texture) {
         gl.bindTexture(gl.TEXTURE_2D, texture);

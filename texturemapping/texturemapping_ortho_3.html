@@ -48,12 +48,11 @@
 
     var offset = 499;
     function initLRBT() {
-	 left = 0;
-         right = gl.viewportWidth-offset;
-	 bottom = -gl.viewportHeight+offset;
-	 topp = 0;
+        left = 0;
+        right = gl.viewportWidth-offset;
+        bottom = -gl.viewportHeight+offset;
+        topp = 0;
     }
-
 
     function initGL(canvas) {
         try {
@@ -67,7 +66,6 @@
         }
         initLRBT();
     }
-
 
     function getShader(gl, id) {
         var shaderScript = document.getElementById(id);
@@ -132,7 +130,6 @@
         shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
     }
 
-
     function handleLoadedTexture(texture) {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -142,7 +139,6 @@
         gl.bindTexture(gl.TEXTURE_2D, null);
 	drawScene();
     }
-
 
     var neheTexture;
 
@@ -155,7 +151,6 @@
 
         neheTexture.image.src = "gorilla.png";
     }
-
 
     var mvMatrix = mat4.create();
     var mvMatrixStack = [];
@@ -174,17 +169,14 @@
         mvMatrix = mvMatrixStack.pop();
     }
 
-
     function setMatrixUniforms() {
         gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
     }
 
-
     var cubeVertexPositionBuffer;
     var cubeVertexTextureCoordBuffer;
     var cubeVertexIndexBuffer;
-
 
     function initBuffers() {
         cubeVertexPositionBuffer = gl.createBuffer();
@@ -224,7 +216,6 @@
         cubeVertexIndexBuffer.numItems = 6;
     }
 
-
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -253,7 +244,6 @@
         gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
     }
 
-
     function webGLStart() {
         var canvas = document.getElementById("3dcanvas");
         initGL(canvas);
@@ -264,13 +254,9 @@
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
     }
-
-
 </script>
 
-
 </head>
-
 
 <body onload="webGLStart();">
     <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
