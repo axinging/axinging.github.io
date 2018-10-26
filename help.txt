@@ -1,0 +1,5 @@
+
+sed -i "s/glMatrix-0.9.5.min.js/\/resources\/glMatrix-0.9.5.min.js/g" `grep "glMatrix-0.9.5.min.js" -rl .`
+sed -i "s/webgl-utils.js/\/resources\/webgl-utils.js/g" `grep "webgl-utils.js" -rl .`
+sed -i "s/webgl-utils.js/\/resources\/gorilla.png/g" `grep "gorilla.png" -rl .`
+
