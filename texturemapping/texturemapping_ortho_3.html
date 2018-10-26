@@ -39,6 +39,22 @@
 
     var gl;
 
+    var left;
+    var right;
+    var bottom;
+    var topp;
+    var near = 0.1;
+    var far = 100;
+
+    var offset = 499;
+    function initLRBT() {
+	 left = 0;
+         right = gl.viewportWidth-offset;
+	 bottom = -gl.viewportHeight+offset;
+	 topp = 0;
+    }
+
+
     function initGL(canvas) {
         try {
             gl = canvas.getContext("experimental-webgl");
@@ -49,6 +65,7 @@
         if (!gl) {
             alert("Could not initialise WebGL, sorry :-(");
         }
+        initLRBT();
     }
 
 
@@ -168,29 +185,12 @@
     var cubeVertexTextureCoordBuffer;
     var cubeVertexIndexBuffer;
 
-	var left;
-        var right;
-	var bottom;
-	var topp;
-	var near = 0.1;
-	var far = 100;
-    var offset = 499;
-	    function initLRBT() {
-	 left = 0;
-         right = gl.viewportWidth-offset;
-	 bottom = -gl.viewportHeight+offset;
-	 topp = 0;
-    }
-
 
     function initBuffers() {
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-	var xy = 0.0;
-	var xy2 = 500.0-offset;
-	var z = -1.0;
 
-        initLRBT();
+	var z = -1.0;
         vertices = [
             left, bottom, z,
             right, bottom, z,
@@ -230,7 +230,6 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	//mat4.ortho(0, gl.viewportWidth-offset, 0, gl.viewportHeight-offset, 0.1, 100.0,pMatrix);
 
-	initLRBT();
 	mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
 
         mat4.identity(mvMatrix);

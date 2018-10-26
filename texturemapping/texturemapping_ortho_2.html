@@ -39,6 +39,20 @@
 
     var gl;
 
+    var left;
+    var right;
+    var bottom;
+    var topp;
+    var near = 0.1;
+    var far = 100;
+
+    function initLRBT() {
+	 left = 0;
+         right = gl.viewportWidth;
+	 bottom = -gl.viewportHeight;
+	 topp = 0;
+    }
+
     function initGL(canvas) {
         try {
             gl = canvas.getContext("experimental-webgl");
@@ -49,8 +63,8 @@
         if (!gl) {
             alert("Could not initialise WebGL, sorry :-(");
         }
+        initLRBT();
     }
-
 
     function getShader(gl, id) {
         var shaderScript = document.getElementById(id);
@@ -168,44 +182,19 @@
     var cubeVertexTextureCoordBuffer;
     var cubeVertexIndexBuffer;
 
-	var left;
-        var right;
-	var bottom;
-	var topp;
-	var near = 0.1;
-	var far = 100;
-    function initLRBT() {
-	 left = 0;
-         right = gl.viewportWidth;
-	 bottom = -gl.viewportHeight;
-	 topp = 0;
-    }
 
     function initBuffers() {
         cubeVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-	var xy = 0.0;
-	var xy2 = 500.0;
-	var z = -1.0;
-		initLRBT();
 
+	var z = -1.0;
         vertices = [
-            left, bottom,  z,
-            right, bottom,  z,
-            right, topp,  z,
-            left, topp,  z,
+            left, bottom, z,
+            right, bottom, z,
+            right, topp, z,
+            left, topp, z,
         ];
 	
-	/*
-        vertices = [
-            xy, xy, z,
-            xy2, xy, z,
-            xy2, xy2, z,
-            xy, xy2, z,
-        ];*/
-
-
-
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
         cubeVertexPositionBuffer.numItems = 24;
@@ -238,11 +227,10 @@
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         //mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-	// ortho(out, left, right, bottom, top, near, far);
+	//ortho(out, left, right, bottom, top, near, far);
 	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
 	//mat4.ortho(0, gl.viewportWidth, 0, gl.viewportHeight, 0.1, 100.0,pMatrix);
 
-	initLRBT();
 
 	mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
 
