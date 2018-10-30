@@ -60,27 +60,26 @@
      
         left = -width;
  	right = width;
-	topp = -height;
-	bottom = height;
-
+	bottom = -height;
+	topp = height;
     }
 
     function initVertices() {
-       
 	var scale  =  1.0;
-	var Zeye = 0.5; //Can be any between 0.5, 100
-	var left_at_any_z = left*(-Zeye)/near;
-	var right_at_any_z = right*(-Zeye)/near;
-	var bottom_at_any_z = bottom*(-Zeye)/near;
-	var topp_at_any_z = topp*(-Zeye)/near;
+	var Zeye = -0.5; //Can be any between 0.5, 100
+	var left_at_any_z = left*(Zeye)/-near;
+	var right_at_any_z = right*(Zeye)/-near;
+	var bottom_at_any_z = bottom*(Zeye)/-near;
+	var topp_at_any_z = topp*(Zeye)/-near;
         vertices = [
-            left_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, topp_at_any_z*scale, -Zeye,
-            left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
+            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*scale, topp_at_any_z*scale, Zeye,
+            left_at_any_z*scale, topp_at_any_z*scale, Zeye,
         ];
 	return vertices;
     }
+
 
     function initTextureCoords() { 
         var textureScale = 1.0;
