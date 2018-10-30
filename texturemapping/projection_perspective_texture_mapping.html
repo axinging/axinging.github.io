@@ -88,31 +88,55 @@
 
 	var clip_mode ="full";
 
-	if (clip_mode == "full") {
+	if (clip_mode == "zoom2") {
+		textureScale = 5.0;
+		textureCoords = [
+		  0.0, 0.0,
+		  1.0*textureScale, 0.0,
+		  1.0*textureScale, 1.0,
+		  0.0, 1.0,
+		];
+	} else if (clip_mode == "zoom") {
+		textureScale = 5.0;
+		textureCoords = [
+		  0.0, 0.0,
+		  1.0*textureScale, 0.0,
+		  1.0*textureScale, 1.0*textureScale,
+		  0, 1.0*textureScale,
+		];
+	} else if (clip_mode == "translate_scale") {
+		textureScale = 5.0;
+		textureCoords = [
+		  0.0, 1.0,
+		  2.0, 1.0,
+		  0.0, -1.0,
+		  2.0, -1.0,
+		];
+	} else if (clip_mode == "full") {
 		textureScale = 1.0;
 		textureCoords = [
 		  0.0, 0.0,
-		  1.0*textureScale,  0.0,
+		  1.0*textureScale, 0.0,
 		  1.0*textureScale, 1.0,
-		  0, 1.0,
+		  0.0, 1.0,
 		];
 
 	}else if (clip_mode == "left_half") {
 		// 1/2  left half
 		var textureCoords = [
 		  0.0, 0.0,
-		  1.0*textureScale,  0.0,
+		  1.0*textureScale, 0.0,
 		  1.0*textureScale, 1.0,
-		  0, 1.0,
+		  0.0, 1.0,
 		];
 
 	} else if (clip_mode == "right_half") {
 		// 1/2  right half
 		textureCoords = [
-		   1.0*textureScale,0.0,
-		  1.0,  0.0,
+		  1.0*textureScale, 0.0,
+		  1.0, 0.0,
 		  1.0, 1.0,
-		   1.0*textureScale, 1.0,
+		  1.0*textureScale, 1.0,
 		];
 
 	} else if (clip_mode == "top_half") {
@@ -164,10 +188,10 @@
 	} else if (clip_mode == "left_top") {
 		// 1/4 left top
 		var textureCoords = [
-		0, 1.0*textureScale,
+		  0, 1.0*textureScale,
 		  1.0*textureScale, 1.0*textureScale,
-		1.0*textureScale, 1.0,
-		 0, 1.0,
+		  1.0*textureScale, 1.0,
+		  0, 1.0,
 		];
 
 	}
