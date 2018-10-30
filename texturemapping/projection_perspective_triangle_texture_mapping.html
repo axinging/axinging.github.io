@@ -47,9 +47,9 @@
     var topp;
     var aspect;
     
-    var fovY = 45;
+    var fovY = 45.0;
     var near = 0.5;
-    var far = 100;
+    var far = 100.0;
 
     function initLRBT() {
 	aspect = gl.viewportWidth/gl.viewportHeight;
@@ -64,11 +64,10 @@
 	bottom = height;
 
     }
-    var vertices;
 
     function initVertices() {
        
-	var scale  =  0.99;
+	var scale  =  1.0;
 	var Zeye = 0.5; //Can be any between 0.5, 100
 	var left_at_any_z = left*(-Zeye)/near;
 	var right_at_any_z = right*(-Zeye)/near;
@@ -78,8 +77,86 @@
             left_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
             right_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
             right_at_any_z*scale, topp_at_any_z*scale, -Zeye,
-            left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
+            //left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
         ];
+	return vertices;
+    }
+
+    function initTextureCoords() {
+
+        var textureScale = 1.0;
+	// 1/4triangle right bottom
+        var textureCoords = [
+          0.0, 0.0,
+          1.0*textureScale, 0.0,
+          1.0*textureScale, 1.0*textureScale,
+          //0.0, 1.0*textureScale,
+        ];
+
+
+	// 1/4  right bottom
+	/*
+        var textureCoords = [
+          0.0, 0.0,
+          1.0*textureScale, 0.0,
+          1.0*textureScale, 1.0*textureScale,
+          0.0, 1.0*textureScale,
+        ];
+	*/
+
+	// 1/4  left top
+	/*
+        var textureCoords = [
+          1.0*textureScale, 1.0*textureScale,
+          1.0, 1.0*textureScale,
+          1.0, 1.0,
+          1.0*textureScale, 1.0,
+        ];
+	*/
+	// 1/4  right top
+	/*
+	var textureCoords = [
+	0, 1.0*textureScale,
+	  1.0*textureScale, 1.0*textureScale,
+	1.0*textureScale, 1.0,
+	 0, 1.0,
+	];
+	*/
+
+
+	// 1/4  left bottom
+	/*
+	var textureCoords = [
+	  1.0*textureScale, 0.0,
+	  1.0, 0,
+	  1.0, 1.0*textureScale,
+	  1.0*textureScale,        
+	  1.0*textureScale,
+	];
+	*/
+
+	// bottom half
+	/*
+        var textureCoords = [
+          0.0, 0.0,
+          1.0, 0.0,
+          1.0, 1.0*textureScale,
+          0.0, 1.0*textureScale,
+        ];
+	*/
+
+
+	// top half
+	/*
+	var textureCoords = [
+          0.0, 1.0*textureScale,
+          1.0, 1.0*textureScale,
+          1.0, 1.0,
+          0.0, 1.0,
+        ];
+	*/
+
+	return textureCoords;
     }
 
     var shaderProgram;
@@ -140,40 +217,35 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
 
+	var vertics = initVertices();
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
-        cubeVertexPositionBuffer.numItems = 4;
+        cubeVertexPositionBuffer.numItems = 3;
 
         cubeVertexIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
         var cubeVertexIndices = [
-            0, 1, 2,      0, 2, 3
+            0, 1, 2,  //0, 2, 3
         ];
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
         cubeVertexIndexBuffer.itemSize = 1;
-        cubeVertexIndexBuffer.numItems = 6;
+        cubeVertexIndexBuffer.numItems = 3;
 
         cubeVertexTextureCoordBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
-        var textureCoords = [
-          // Front face
-          0.0, 0.0,
-          1.0, 0.0,
-          1.0, 1.0,
-          //1, 0.5,
-          0.0, 1.0,
-          //0.0, 0.5,
-        ];
+ 	
+	var textureCoords = initTextureCoords();	
+	
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
 	cubeVertexTextureCoordBuffer.itemSize = 2;
-        cubeVertexTextureCoordBuffer.numItems = 4;
+        cubeVertexTextureCoordBuffer.numItems = 3;
 
     }
 
 
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
 	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
@@ -206,7 +278,6 @@
         initGL(canvas);
         shaderProgram = initShadersTexture(gl);
         initLRBT();
-        initVertices();
         initBuffers();
         initTexture(gl);
 
