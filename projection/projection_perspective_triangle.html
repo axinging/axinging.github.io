@@ -49,7 +49,8 @@
         return Math.tan(degrees * Math.PI/180);
     }
 
-    function initLRBT() {
+
+/*    function initLRBT() {
 	aspect = gl.viewportWidth/gl.viewportHeight;
 
         var tangent = tan(fovY/2); // tangent of half fovY
@@ -66,7 +67,7 @@
     function initVertices() {
        
         var vertices;
-	var scale  =  0.99;
+	var scale  =  1.0;
 	var Zeye = 5;
 	var left_at_any_z = left*(-Zeye)/near;
 	var right_at_any_z = right*(-Zeye)/near;
@@ -75,12 +76,56 @@
         vertices = [
             left_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
             right_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, topp_at_any_z*scale, -Zeye,
+            right_at_any_z*scale/2, topp_at_any_z*scale, -Zeye,
             //left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
         ];
 	return vertices;
     }	
-	/*
+*/
+
+
+    function initLRBT() {
+	aspect = gl.viewportWidth/gl.viewportHeight;
+
+        var tangent = tan(fovY/2); // tangent of half fovY
+        height = near * tangent;         // half height of near plane
+        width = height * aspect;          // half width of near plane
+     
+        left = -width;
+ 	right = width;
+	bottom = -height;
+	topp = height;
+    }
+
+    function initVertices() {
+	var scale  =  1.0;
+	var Zeye = -0.5; //Can be any between 0.5, 100
+	var left_at_any_z = left*(Zeye)/-near;
+	var right_at_any_z = right*(Zeye)/-near;
+	var bottom_at_any_z = bottom*(Zeye)/-near;
+	var topp_at_any_z = topp*(Zeye)/-near;
+
+        vertices = [
+            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*0, topp_at_any_z*scale, Zeye
+            //right_at_any_z*scale, topp_at_any_z*scale, Zeye
+            //left_at_any_z*scale, topp_at_any_z*scale, Zeye,
+        ];
+		console.log("vertices = "+ vertices);
+        var vertices2 = [
+            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+            right_at_any_z*scale/2.0, topp_at_any_z*scale, Zeye
+            //left_at_any_z*scale, topp_at_any_z*scale, Zeye,
+        ];
+		console.log("vertices2 = "+ vertices2);
+	return vertices;
+    }
+
+
+
+/*
 	function initColors() {
 
 	// New: Specify colors for each vertex as well
@@ -148,32 +193,7 @@
 
 
     var shaderProgram;
-	/*
-    function initShaders() {
-        var fragmentShader = getShader(gl, "shader-fs");
-        var vertexShader = getShader(gl, "shader-vs");
 
-        shaderProgram = gl.createProgram();
-        gl.attachShader(shaderProgram, vertexShader);
-        gl.attachShader(shaderProgram, fragmentShader);
-        gl.linkProgram(shaderProgram);
-
-        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-            alert("Could not initialise shaders");
-        }
-
-        gl.useProgram(shaderProgram);
-
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-        shaderProgram.colorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-        gl.enableVertexAttribArray(shaderProgram.colorAttribute);
-
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    }
-    	*/
 
     var mvMatrix = mat4.create();
     var mvMatrixStack = [];
@@ -211,7 +231,7 @@
 	var vertices = initVertices();
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         cubeVertexPositionBuffer.itemSize = 3;
-        cubeVertexPositionBuffer.numItems = 4;
+        cubeVertexPositionBuffer.numItems = 3;
 
         cubeVertexIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
@@ -230,7 +250,7 @@
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         
         colorBuffer.itemSize = 3;
-        colorBuffer.numItems = 4;
+        colorBuffer.numItems = 3;
     }
 
 

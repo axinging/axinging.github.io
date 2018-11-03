@@ -63,16 +63,17 @@
      
         left = -width;
  	right = width;
-	topp = -height;
-	bottom = height;
+	topp = height;
+	bottom = -height;
 
 
 	var scale  =  1.0;
+	var Zeye = -near;
         vertices = [
-            left*scale, bottom*scale, -near,
-            right*scale, bottom*scale, -near,
-            right*scale, topp*scale, -near,
-            left*scale, topp*scale, -near,
+            left*scale, bottom*scale, Zeye,
+            right*scale, bottom*scale, Zeye,
+            right*scale, topp*scale, Zeye,
+            left*scale, topp*scale, Zeye,
         ];
     }
 
