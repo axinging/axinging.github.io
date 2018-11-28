@@ -44,56 +44,26 @@
         return Math.tan(degrees * Math.PI/180);
     }
 
-    /*
-function initLRBT() {
-	aspect = gl.viewportWidth/gl.viewportHeight;
-
-        var tangent = tan(fovY/2); // tangent of half fovY
-        height = near * tangent;         // half height of near plane
-        width = height * aspect;          // half width of near plane
-     
-        left = -width;
- 	right = width;
-	topp = -height;
-	bottom = height;
-
-    }
-    var vertices;
-
-    function initVertices() {
-       
-	var scale  =  0.99;
-	var Zeye = 5;
-	var left_at_any_z = left*(-Zeye)/near;
-	var right_at_any_z = right*(-Zeye)/near;
-	var bottom_at_any_z = bottom*(-Zeye)/near;
-	var topp_at_any_z = topp*(-Zeye)/near;
-        vertices = [
-            left_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, topp_at_any_z*scale, -Zeye,
-            left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
-        ];
-    }
-	*/
-
-
     function initLRBT() {
-	aspect = gl.viewportWidth/gl.viewportHeight;
+        aspect = gl.viewportWidth/gl.viewportHeight;
 
-        var tangent = tan(fovY/2); // tangent of half fovY
-        height = near * tangent;         // half height of near plane
-        width = height * aspect;          // half width of near plane
-     
+        // tangent of half fovY.
+        var tangent = tan(fovY/2);
+        // half height of near plane.
+        height = near * tangent;
+        // half width of near plane.
+        width = height * aspect;
+
         left = -width;
- 	right = width;
-	bottom = -height;
-	topp = height;
+        right = width;
+        bottom = -height;
+        topp = height;
     }
 
     function initVertices() {
 	var scale  =  1.0;
-	var Zeye = -0.5; //Can be any between 0.5, 100
+	// Can be any between -0.5, -100
+	var Zeye = -0.5;
 	var left_at_any_z = left*(Zeye)/-near;
 	var right_at_any_z = right*(Zeye)/-near;
 	var bottom_at_any_z = bottom*(Zeye)/-near;
@@ -237,14 +207,8 @@ function initLRBT() {
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
-	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
-	//mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
 
         mat4.identity(mvMatrix);
-
-	//If want a quad occupy the full canvas, this should match the vertex.
-        //mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
-        //mat4.scale(mvMatrix, [1.0, 1.0, 1.0]);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
