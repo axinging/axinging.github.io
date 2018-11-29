@@ -82,35 +82,29 @@
 
 
     function initTextureCoords() { 
-        var textureScale = 0.5;
+        var textureScale = 1.0;
+	var textureTranslate = 0.0;
 	//  Full
 	var textureCoords;
 
-	var clip_mode ="full";
+	var clip_mode ="zoom4_translate";
 
-	if (clip_mode == "zoom2") {
-		textureScale = 5.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
-	} else if (clip_mode == "zoom") {
-		textureScale = 5.0;
+	if (clip_mode == "zoom4") {
+		textureScale = 4.0;
 		textureCoords = [
 		  0.0, 0.0,
 		  1.0*textureScale, 0.0,
 		  1.0*textureScale, 1.0*textureScale,
-		  0, 1.0*textureScale,
+		  0.0, 1.0*textureScale,
 		];
-	} else if (clip_mode == "translate_scale") {
-		textureScale = 5.0;
+	} else if (clip_mode == "zoom4_translate") {
+		textureScale = 4.0;
+		textureTranslate = -3.0;
 		textureCoords = [
-		  0.0, 1.0,
-		  2.0, 1.0,
-		  0.0, -1.0,
-		  2.0, -1.0,
+		  0.0, 0.0+textureTranslate,
+		  1.0*textureScale, 0.0+textureTranslate,
+		  1.0*textureScale, 1.0*textureScale+textureTranslate,
+		  0, 1.0*textureScale+textureTranslate,
 		];
 	} else if (clip_mode == "full") {
 		textureScale = 1.0;
