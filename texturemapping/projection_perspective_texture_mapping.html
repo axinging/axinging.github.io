@@ -9,87 +9,102 @@
 <script type="text/javascript" src="/library/gl.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
-    precision mediump float;
+  precision mediump float;
 
-    varying vec2 vTextureCoord;
+  varying vec2 vTextureCoord;
 
-    uniform sampler2D uSampler;
+  uniform sampler2D uSampler;
 
-    void main(void) {
-        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    }
+  void main(void) {
+    gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+  }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
+  attribute vec3 aVertexPosition;
+  attribute vec2 aTextureCoord;
 
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
+  uniform mat4 uMVMatrix;
+  uniform mat4 uPMatrix;
 
-    varying vec2 vTextureCoord;
+  varying vec2 vTextureCoord;
 
 
-    void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vTextureCoord = aTextureCoord;
-    }
+  void main(void) {
+    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+    vTextureCoord = aTextureCoord;
+  }
 </script>
 
 
 <script type="text/javascript">
 
-    var gl;
+  var gl;
 
-    var left;
-    var right;
-    var bottom;
-    var topp;
-    var aspect;
-    
-    var fovY = 45.0;
-    var near = 0.5;
-    var far = 100.0;
+  var left;
+  var right;
+  var bottom;
+  var topp;
+  var aspect;
+  
+  var fovY = 45.0;
+  var near = 0.5;
+  var far = 100.0;
 
-    function initLRBT() {
+  function initLRBT() {
 	aspect = gl.viewportWidth/gl.viewportHeight;
 
-        var tangent = tan(fovY/2); // tangent of half fovY
-        height = near * tangent;         // half height of near plane
-        width = height * aspect;          // half width of near plane
-     
-        left = -width;
+  var tangent = tan(fovY/2); // tangent of half fovY
+  height = near * tangent;     // half height of near plane
+  width = height * aspect;      // half width of near plane
+  left = -width;
  	right = width;
 	bottom = -height;
 	topp = height;
-    }
+}
 
-    function initVertices() {
+function initVertices() {
 	var scale  =  1.0;
 	var Zeye = -0.5; //Can be any between 0.5, 100
 	var left_at_any_z = left*(Zeye)/-near;
 	var right_at_any_z = right*(Zeye)/-near;
 	var bottom_at_any_z = bottom*(Zeye)/-near;
 	var topp_at_any_z = topp*(Zeye)/-near;
-        vertices = [
-            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*scale, topp_at_any_z*scale, Zeye,
-            left_at_any_z*scale, topp_at_any_z*scale, Zeye,
-        ];
+  vertices = [
+      left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+      right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
+      right_at_any_z*scale, topp_at_any_z*scale, Zeye,
+      left_at_any_z*scale, topp_at_any_z*scale, Zeye,
+  ];
 	return vertices;
-    }
+  }
 
 
-    function initTextureCoords() { 
-        var textureScale = 1.0;
+  function initTextureCoords() { 
+  var textureScale = 1.0;
 	var textureTranslate = 0.0;
 	//  Full
 	var textureCoords;
 
-	var clip_mode ="zoom4_translate";
+	var clip_mode ="full";
 
-	if (clip_mode == "zoom4") {
+	if (clip_mode == "full") {
+		textureScale = 1.0;
+		textureCoords = [
+		  0.0, 0.0,
+		  1.0*textureScale, 0.0,
+		  1.0*textureScale, 1.0,
+		  0.0, 1.0,
+		];
+	} else if (clip_mode == "zoom2") {
+		textureScale = 2.0;
+		textureCoords = [
+		  0.0, 0.0,
+		  1.0*textureScale, 0.0,
+		  1.0*textureScale, 1.0*textureScale,
+		  0.0, 1.0*textureScale,
+		];
+	} else if (clip_mode == "zoom4") {
 		textureScale = 4.0;
 		textureCoords = [
 		  0.0, 0.0,
@@ -106,17 +121,9 @@
 		  1.0*textureScale, 1.0*textureScale+textureTranslate,
 		  0, 1.0*textureScale+textureTranslate,
 		];
-	} else if (clip_mode == "full") {
-		textureScale = 1.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
-
 	}else if (clip_mode == "left_half") {
 		// 1/2  left half
+    textureScale = 0.5;
 		var textureCoords = [
 		  0.0, 0.0,
 		  1.0*textureScale, 0.0,
@@ -126,6 +133,7 @@
 
 	} else if (clip_mode == "right_half") {
 		// 1/2  right half
+    textureScale = 0.5;
 		textureCoords = [
 		  1.0*textureScale, 0.0,
 		  1.0, 0.0,
@@ -135,6 +143,7 @@
 
 	} else if (clip_mode == "top_half") {
 	 	// 1/2 top half
+    textureScale = 0.5;
 		var textureCoords = [
 		  0.0, 1.0*textureScale,
 		  1.0, 1.0*textureScale,
@@ -144,6 +153,7 @@
 
 	} else if (clip_mode == "bottom_half") {
 		// 1/2 bottom half
+    textureScale = 0.5;
 		var textureCoords = [
 		  0.0, 0.0,
 		  1.0, 0.0,
@@ -153,6 +163,7 @@
 
 	} else if (clip_mode == "left_bottom") {
 		// 1/4 left bottom
+    textureScale = 0.5;
 		var textureCoords = [
 		  0.0, 0.0,
 		  1.0*textureScale, 0.0,
@@ -162,160 +173,160 @@
 
 	} else if (clip_mode == "right_bottom") {
 		// 1/4 right bottom
+    textureScale = 0.5;
 		var textureCoords = [
 		  1.0*textureScale, 0.0,
 		  1.0, 0,
 		  1.0, 1.0*textureScale,
-		  1.0*textureScale,        
+		  1.0*textureScale,
 		  1.0*textureScale,
 		];
-
 	} else if (clip_mode == "right_top") {
 		// 1/4  right top
+    textureScale = 0.5;
 		var textureCoords = [
 		  1.0*textureScale, 1.0*textureScale,
 		  1.0, 1.0*textureScale,
 		  1.0, 1.0,
 		  1.0*textureScale, 1.0,
 		];
-
 	} else if (clip_mode == "left_top") {
 		// 1/4 left top
+    textureScale = 0.5;
 		var textureCoords = [
 		  0, 1.0*textureScale,
 		  1.0*textureScale, 1.0*textureScale,
 		  1.0*textureScale, 1.0,
 		  0, 1.0,
 		];
-
 	}
 	return textureCoords;
-    }
+  }
 
-    var shaderProgram;
+  var shaderProgram;
 
 
-    function handleLoadedTexture(texture) {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.bindTexture(gl.TEXTURE_2D, null);
+  function handleLoadedTexture(texture) {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
 	drawScene();
+  }
+
+  var neheTexture;
+
+  function initTexture(gl) {
+    neheTexture = gl.createTexture();
+    neheTexture.image = new Image();
+    neheTexture.image.onload = function () {
+      handleLoadedTexture(neheTexture)
     }
 
-    var neheTexture;
+    neheTexture.image.src = "/resources/gorilla.png";
+  }
 
-    function initTexture(gl) {
-        neheTexture = gl.createTexture();
-        neheTexture.image = new Image();
-        neheTexture.image.onload = function () {
-            handleLoadedTexture(neheTexture)
-        }
+  var mvMatrix = mat4.create();
+  var mvMatrixStack = [];
+  var pMatrix = mat4.create();
 
-        neheTexture.image.src = "/resources/gorilla.png";
+  function mvPushMatrix() {
+    var copy = mat4.create();
+    mat4.set(mvMatrix, copy);
+    mvMatrixStack.push(copy);
+  }
+
+  function mvPopMatrix() {
+    if (mvMatrixStack.length == 0) {
+      throw "Invalid popMatrix!";
     }
-
-    var mvMatrix = mat4.create();
-    var mvMatrixStack = [];
-    var pMatrix = mat4.create();
-
-    function mvPushMatrix() {
-        var copy = mat4.create();
-        mat4.set(mvMatrix, copy);
-        mvMatrixStack.push(copy);
-    }
-
-    function mvPopMatrix() {
-        if (mvMatrixStack.length == 0) {
-            throw "Invalid popMatrix!";
-        }
-        mvMatrix = mvMatrixStack.pop();
-    }
+    mvMatrix = mvMatrixStack.pop();
+  }
 
 
-    function setMatrixUniforms() {
-        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-    }
+  function setMatrixUniforms() {
+    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+  }
 
 
-    var cubeVertexPositionBuffer;
-    var cubeVertexTextureCoordBuffer;
-    var cubeVertexIndexBuffer;
+  var cubeVertexPositionBuffer;
+  var cubeVertexTextureCoordBuffer;
+  var cubeVertexIndexBuffer;
 
-    function initBuffers() {
-        cubeVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+  function initBuffers() {
+    cubeVertexPositionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
 	var vertices = initVertices();
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        cubeVertexPositionBuffer.itemSize = 3;
-        cubeVertexPositionBuffer.numItems = 4;
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    cubeVertexPositionBuffer.itemSize = 3;
+    cubeVertexPositionBuffer.numItems = 4;
 
-        cubeVertexIndexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-        var cubeVertexIndices = [
-            0, 1, 2,      0, 2, 3
-        ];
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
-        cubeVertexIndexBuffer.itemSize = 1;
-        cubeVertexIndexBuffer.numItems = 6;
+    cubeVertexIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+    var cubeVertexIndices = [
+      0, 1, 2,    0, 2, 3
+    ];
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
+    cubeVertexIndexBuffer.itemSize = 1;
+    cubeVertexIndexBuffer.numItems = 6;
 
-        cubeVertexTextureCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+    cubeVertexTextureCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
 
 	var textureCoords = initTextureCoords();
 
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
 	cubeVertexTextureCoordBuffer.itemSize = 2;
-        cubeVertexTextureCoordBuffer.numItems = 4;
+    cubeVertexTextureCoordBuffer.numItems = 4;
 
-    }
-
-
-    function drawScene() {
-        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
-	//mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
-	//mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
-
-        mat4.identity(mvMatrix);
-
-	//If want a quad occupy the full canvas, this should match the vertex.
-        //mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
-        //mat4.scale(mvMatrix, [1.0, 1.0, 1.0]);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
-        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, cubeVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, neheTexture);
-        gl.uniform1i(shaderProgram.samplerUniform, 0);
-
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-        setMatrixUniforms();
-        gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-    }
+  }
 
 
-    function webGLStart() {
-        var canvas = document.getElementById("3dcanvas");
-        initGL(canvas);
-        shaderProgram = initShadersTexture(gl);
-        initLRBT();
-        initBuffers();
-        initTexture(gl);
+  function drawScene() {
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
 
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        gl.enable(gl.DEPTH_TEST);
-    }
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	  mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
+	  //mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
+	  //mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
+
+    mat4.identity(mvMatrix);
+
+	  //If want a quad occupy the full canvas, this should match the vertex.
+    //mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
+    //mat4.scale(mvMatrix, [1.0, 1.0, 1.0]);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, cubeVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, neheTexture);
+    gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+    setMatrixUniforms();
+    gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+  }
+
+
+  function webGLStart() {
+    var canvas = document.getElementById("3dcanvas");
+    initGL(canvas);
+    shaderProgram = initShadersTexture(gl);
+    initLRBT();
+    initBuffers();
+    initTexture(gl);
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.enable(gl.DEPTH_TEST);
+  }
 
 
 </script>
@@ -325,5 +336,5 @@
 
 
 <body onload="webGLStart();">
-    <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
+  <canvas id="3dcanvas" style="border: none;" width="500" height="500"></canvas>
 </body></html>
