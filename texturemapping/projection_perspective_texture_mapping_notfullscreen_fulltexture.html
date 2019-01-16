@@ -51,192 +51,191 @@
   var near = 0.5;
   var far = 100.0;
 
-  function initLRBT() {
-	aspect = gl.viewportWidth/gl.viewportHeight;
+function initLRBT() {
+  aspect = gl.viewportWidth/gl.viewportHeight;
 
   var tangent = tan(fovY/2); // tangent of half fovY
   height = near * tangent;     // half height of near plane
   width = height * aspect;      // half width of near plane
   left = -width;
- 	right = width;
-	bottom = -height;
-	topp = height;
+  right = width;
+  bottom = -height;
+  topp = height;
 }
 
 function initVertices() {
-	var scale  =  0.8;
-	var Zeye = -0.5; //Can be any between 0.5, 100
-	var left_at_any_z = left*(Zeye)/-near;
-	var right_at_any_z = right*(Zeye)/-near;
-	var bottom_at_any_z = bottom*(Zeye)/-near;
-	var topp_at_any_z = topp*(Zeye)/-near;
+  var scale  =  0.8;
+  var Zeye = -0.5; //Can be any between 0.5, 100
+  var left_at_any_z = left*(Zeye)/-near;
+  var right_at_any_z = right*(Zeye)/-near;
+  var bottom_at_any_z = bottom*(Zeye)/-near;
+  var topp_at_any_z = topp*(Zeye)/-near;
   vertices = [
       left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
       right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
       right_at_any_z*scale, topp_at_any_z*scale, Zeye,
       left_at_any_z*scale, topp_at_any_z*scale, Zeye,
   ];
-	return vertices;
-  }
+  return vertices;
+}
 
 
-  function initTextureCoords() { 
+function initTextureCoords() { 
   var textureScale = 1.0;
-	var textureTranslate = 0.0;
-	//  Full
-	var textureCoords;
+  var textureTranslate = 0.0;
+  //  Full
+  var textureCoords;
 
-	var clip_mode ="full";
+  var clip_mode ="full";
 
-	if (clip_mode == "full") {
-		textureScale = 1.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
-	} else if (clip_mode == "zoom2") {
-		textureScale = 2.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
-	} else if (clip_mode == "zoom4") {
-		textureScale = 4.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
-	} else if (clip_mode == "zoom4_translate") {
-		textureScale = 4.0;
-		textureTranslate = -3.0;
-		textureCoords = [
-		  0.0, 0.0+textureTranslate,
-		  1.0*textureScale, 0.0+textureTranslate,
-		  1.0*textureScale, 1.0*textureScale+textureTranslate,
-		  0, 1.0*textureScale+textureTranslate,
-		];
-	}else if (clip_mode == "left_half") {
-		// 1/2  left half
+  if (clip_mode == "full") {
+    textureScale = 1.0;
+    textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0,
+      0.0, 1.0,
+    ];
+  } else if (clip_mode == "zoom2") {
+    textureScale = 2.0;
+    textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
+  } else if (clip_mode == "zoom4") {
+    textureScale = 4.0;
+    textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
+  } else if (clip_mode == "zoom4_translate") {
+    textureScale = 4.0;
+    textureTranslate = -3.0;
+    textureCoords = [
+      0.0, 0.0+textureTranslate,
+      1.0*textureScale, 0.0+textureTranslate,
+      1.0*textureScale, 1.0*textureScale+textureTranslate,
+      0, 1.0*textureScale+textureTranslate,
+    ];
+  }else if (clip_mode == "left_half") {
+    // 1/2  left half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
+    var textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0,
+      0.0, 1.0,
+    ];
 
-	} else if (clip_mode == "right_half") {
-		// 1/2  right half
+  } else if (clip_mode == "right_half") {
+    // 1/2  right half
     textureScale = 0.5;
-		textureCoords = [
-		  1.0*textureScale, 0.0,
-		  1.0, 0.0,
-		  1.0, 1.0,
-		  1.0*textureScale, 1.0,
-		];
+    textureCoords = [
+      1.0*textureScale, 0.0,
+      1.0, 0.0,
+      1.0, 1.0,
+      1.0*textureScale, 1.0,
+    ];
 
-	} else if (clip_mode == "top_half") {
-	 	// 1/2 top half
+  } else if (clip_mode == "top_half") {
+     // 1/2 top half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 1.0*textureScale,
-		  1.0, 1.0*textureScale,
-		  1.0, 1.0,
-		  0.0, 1.0,
-		];
+    var textureCoords = [
+      0.0, 1.0*textureScale,
+      1.0, 1.0*textureScale,
+      1.0, 1.0,
+      0.0, 1.0,
+    ];
 
-	} else if (clip_mode == "bottom_half") {
-		// 1/2 bottom half
+  } else if (clip_mode == "bottom_half") {
+    // 1/2 bottom half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0, 0.0,
-		  1.0, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
+    var textureCoords = [
+      0.0, 0.0,
+      1.0, 0.0,
+      1.0, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
 
-	} else if (clip_mode == "left_bottom") {
-		// 1/4 left bottom
+  } else if (clip_mode == "left_bottom") {
+    // 1/4 left bottom
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
+    var textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
 
-	} else if (clip_mode == "right_bottom") {
-		// 1/4 right bottom
+  } else if (clip_mode == "right_bottom") {
+    // 1/4 right bottom
     textureScale = 0.5;
-		var textureCoords = [
-		  1.0*textureScale, 0.0,
-		  1.0, 0,
-		  1.0, 1.0*textureScale,
-		  1.0*textureScale,
-		  1.0*textureScale,
-		];
-	} else if (clip_mode == "right_top") {
-		// 1/4  right top
+    var textureCoords = [
+      1.0*textureScale, 0.0,
+      1.0, 0,
+      1.0, 1.0*textureScale,
+      1.0*textureScale,
+      1.0*textureScale,
+    ];
+  } else if (clip_mode == "right_top") {
+    // 1/4  right top
     textureScale = 0.5;
-		var textureCoords = [
-		  1.0*textureScale, 1.0*textureScale,
-		  1.0, 1.0*textureScale,
-		  1.0, 1.0,
-		  1.0*textureScale, 1.0,
-		];
-	} else if (clip_mode == "left_top") {
-		// 1/4 left top
+    var textureCoords = [
+      1.0*textureScale, 1.0*textureScale,
+      1.0, 1.0*textureScale,
+      1.0, 1.0,
+      1.0*textureScale, 1.0,
+    ];
+  } else if (clip_mode == "left_top") {
+    // 1/4 left top
     textureScale = 0.5;
-		var textureCoords = [
-		  0, 1.0*textureScale,
-		  1.0*textureScale, 1.0*textureScale,
-		  1.0*textureScale, 1.0,
-		  0, 1.0,
-		];
-	}
-	return textureCoords;
+    var textureCoords = [
+      0, 1.0*textureScale,
+      1.0*textureScale, 1.0*textureScale,
+      1.0*textureScale, 1.0,
+      0, 1.0,
+    ];
   }
+  return textureCoords;
+}
 
-  var shaderProgram;
+var shaderProgram;
 
 
-  function handleLoadedTexture(texture) {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.bindTexture(gl.TEXTURE_2D, null);
-	drawScene();
+function handleLoadedTexture(texture) {
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  drawScene();
+}
+
+var neheTexture;
+
+function initTexture(gl) {
+  neheTexture = gl.createTexture();
+  neheTexture.image = new Image();
+  neheTexture.image.onload = function () {
+    handleLoadedTexture(neheTexture)
   }
+  neheTexture.image.src = "/resources/gorilla.png";
+}
 
-  var neheTexture;
+var mvMatrix = mat4.create();
+var mvMatrixStack = [];
+var pMatrix = mat4.create();
 
-  function initTexture(gl) {
-    neheTexture = gl.createTexture();
-    neheTexture.image = new Image();
-    neheTexture.image.onload = function () {
-      handleLoadedTexture(neheTexture)
-    }
-
-    neheTexture.image.src = "/resources/gorilla.png";
-  }
-
-  var mvMatrix = mat4.create();
-  var mvMatrixStack = [];
-  var pMatrix = mat4.create();
-
-  function mvPushMatrix() {
-    var copy = mat4.create();
-    mat4.set(mvMatrix, copy);
-    mvMatrixStack.push(copy);
-  }
+function mvPushMatrix() {
+  var copy = mat4.create();
+  mat4.set(mvMatrix, copy);
+  mvMatrixStack.push(copy);
+}
 
   function mvPopMatrix() {
     if (mvMatrixStack.length == 0) {
@@ -260,7 +259,7 @@ function initVertices() {
     cubeVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
 
-	var vertices = initVertices();
+  var vertices = initVertices();
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     cubeVertexPositionBuffer.itemSize = 3;
     cubeVertexPositionBuffer.numItems = 4;
@@ -277,12 +276,10 @@ function initVertices() {
     cubeVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
 
-	var textureCoords = initTextureCoords();
-
+  var textureCoords = initTextureCoords();
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-	cubeVertexTextureCoordBuffer.itemSize = 2;
+    cubeVertexTextureCoordBuffer.itemSize = 2;
     cubeVertexTextureCoordBuffer.numItems = 4;
-
   }
 
 
@@ -292,13 +289,13 @@ function initVertices() {
     gl.clearColor(0.8, 0.8, 0.8, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-	  mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
-	  //mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
-	  //mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
+    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, near, far, pMatrix);
+    //mat4.ortho(-gl.viewportWidth/2, gl.viewportWidth/2, -gl.viewportHeight/2, gl.viewportHeight/2, 0.1, 100.0,pMatrix);
+    //mat4.ortho(left, right, bottom, topp, near, far,pMatrix);
 
     mat4.identity(mvMatrix);
 
-	  //If want a quad occupy the full canvas, this should match the vertex.
+    //If want a quad occupy the full canvas, this should match the vertex.
     //mat4.translate(mvMatrix, [0.0, 0.0, -5.0]);
     //mat4.scale(mvMatrix, [1.0, 1.0, 1.0]);
 
