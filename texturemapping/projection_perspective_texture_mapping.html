@@ -58,155 +58,151 @@
   height = near * tangent;     // half height of near plane
   width = height * aspect;      // half width of near plane
   left = -width;
- 	right = width;
-	bottom = -height;
-	topp = height;
+  right = width;
+  bottom = -height;
+  topp = height;
 }
 
 function initVertices() {
-	var scale  =  1.0;
-	var zEye = -0.5; //Can be any between 0.5, 100
-	var leftAtAnyZ = left*(zEye)/-near;
-	var rightAtAnyZ = right*(zEye)/-near;
-	var bottomAtAnyZ = bottom*(zEye)/-near;
-	var topAtAnyZ = topp*(zEye)/-near;
+  var scale  =  1.0;
+  var zEye = -0.5; //Can be any between 0.5, 100
+  var leftAtAnyZ = left*(zEye)/-near;
+  var rightAtAnyZ = right*(zEye)/-near;
+  var bottomAtAnyZ = bottom*(zEye)/-near;
+  var topAtAnyZ = topp*(zEye)/-near;
   vertices = [
-      leftAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
-      rightAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
-      rightAtAnyZ*scale, topAtAnyZ*scale, zEye,
-      leftAtAnyZ*scale, topAtAnyZ*scale, zEye,
+    leftAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+    rightAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+    rightAtAnyZ*scale, topAtAnyZ*scale, zEye,
+    leftAtAnyZ*scale, topAtAnyZ*scale, zEye,
   ];
 	return vertices;
   }
 
 
-  function initTextureCoords() { 
+function initTextureCoords() { 
   var textureScale = 1.0;
-	var textureTranslate = 0.0;
-	//  Full
-	var textureCoords;
-
-	var clip_mode ="full";
-
-	if (clip_mode == "full") {
-		textureScale = 1.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
-	} else if (clip_mode == "zoom2") {
-		textureScale = 2.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
-	} else if (clip_mode == "zoom4") {
-		textureScale = 4.0;
-		textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
-	} else if (clip_mode == "zoom4_translate") {
-		textureScale = 4.0;
-		textureTranslate = -3.0;
-		textureCoords = [
-		  0.0, 0.0+textureTranslate,
-		  1.0*textureScale, 0.0+textureTranslate,
-		  1.0*textureScale, 1.0*textureScale+textureTranslate,
-		  0, 1.0*textureScale+textureTranslate,
-		];
-	}else if (clip_mode == "left_half") {
-		// 1/2  left half
+  var textureTranslate = 0.0;
+  //  Full
+  var textureCoords;
+  var clip_mode ="full";
+  if (clip_mode == "full") {
+    textureScale = 1.0;
+	textureCoords = [
+	  0.0, 0.0,
+	  1.0*textureScale, 0.0,
+	  1.0*textureScale, 1.0,
+	  0.0, 1.0,
+	];
+  } else if (clip_mode == "zoom2") {
+	textureScale = 2.0;
+	textureCoords = [
+	  0.0, 0.0,
+	  1.0*textureScale, 0.0,
+	  1.0*textureScale, 1.0*textureScale,
+	  0.0, 1.0*textureScale,
+	];
+  } else if (clip_mode == "zoom4") {
+    textureScale = 4.0;
+    textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
+  } else if (clip_mode == "zoom4_translate") {
+    textureScale = 4.0;
+    textureTranslate = -3.0;
+    textureCoords = [
+      0.0, 0.0+textureTranslate,
+      1.0*textureScale, 0.0+textureTranslate,
+      1.0*textureScale, 1.0*textureScale+textureTranslate,
+      0, 1.0*textureScale+textureTranslate,
+	];
+  }else if (clip_mode == "left_half") {
+    // 1/2  left half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0,
-		  0.0, 1.0,
-		];
-
-	} else if (clip_mode == "right_half") {
-		// 1/2  right half
+    var textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0,
+      0.0, 1.0,
+    ];
+  } else if (clip_mode == "right_half") {
+    // 1/2  right half
     textureScale = 0.5;
-		textureCoords = [
-		  1.0*textureScale, 0.0,
-		  1.0, 0.0,
-		  1.0, 1.0,
-		  1.0*textureScale, 1.0,
-		];
+    textureCoords = [
+      1.0*textureScale, 0.0,
+      1.0, 0.0,
+      1.0, 1.0,
+      1.0*textureScale, 1.0,
+    ];
 
-	} else if (clip_mode == "top_half") {
-	 	// 1/2 top half
+  } else if (clip_mode == "top_half") {
+ 	// 1/2 top half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 1.0*textureScale,
-		  1.0, 1.0*textureScale,
-		  1.0, 1.0,
-		  0.0, 1.0,
-		];
-
-	} else if (clip_mode == "bottom_half") {
-		// 1/2 bottom half
+    var textureCoords = [
+      0.0, 1.0*textureScale,
+      1.0, 1.0*textureScale,
+      1.0, 1.0,
+      0.0, 1.0,
+    ];
+  } else if (clip_mode == "bottom_half") {
+    // 1/2 bottom half
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0, 0.0,
-		  1.0, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
+    var textureCoords = [
+      0.0, 0.0,
+      1.0, 0.0,
+      1.0, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
 
-	} else if (clip_mode == "left_bottom") {
-		// 1/4 left bottom
+  } else if (clip_mode == "left_bottom") {
+    // 1/4 left bottom
     textureScale = 0.5;
-		var textureCoords = [
-		  0.0, 0.0,
-		  1.0*textureScale, 0.0,
-		  1.0*textureScale, 1.0*textureScale,
-		  0.0, 1.0*textureScale,
-		];
+    var textureCoords = [
+      0.0, 0.0,
+      1.0*textureScale, 0.0,
+      1.0*textureScale, 1.0*textureScale,
+      0.0, 1.0*textureScale,
+    ];
 
-	} else if (clip_mode == "right_bottom") {
+  } else if (clip_mode == "right_bottom") {
 		// 1/4 right bottom
+  textureScale = 0.5;
+    var textureCoords = [
+      1.0*textureScale, 0.0,
+      1.0, 0,
+      1.0, 1.0*textureScale,
+      1.0*textureScale,
+      1.0*textureScale,
+    ];
+  } else if (clip_mode == "right_top") {
+    // 1/4  right top
     textureScale = 0.5;
-		var textureCoords = [
-		  1.0*textureScale, 0.0,
-		  1.0, 0,
-		  1.0, 1.0*textureScale,
-		  1.0*textureScale,
-		  1.0*textureScale,
-		];
-	} else if (clip_mode == "right_top") {
-		// 1/4  right top
+    var textureCoords = [
+      1.0*textureScale, 1.0*textureScale,
+      1.0, 1.0*textureScale,
+      1.0, 1.0,
+      1.0*textureScale, 1.0,
+    ];
+  } else if (clip_mode == "left_top") {
+    // 1/4 left top
     textureScale = 0.5;
-		var textureCoords = [
-		  1.0*textureScale, 1.0*textureScale,
-		  1.0, 1.0*textureScale,
-		  1.0, 1.0,
-		  1.0*textureScale, 1.0,
-		];
-	} else if (clip_mode == "left_top") {
-		// 1/4 left top
-    textureScale = 0.5;
-		var textureCoords = [
-		  0, 1.0*textureScale,
-		  1.0*textureScale, 1.0*textureScale,
-		  1.0*textureScale, 1.0,
-		  0, 1.0,
-		];
-	}
-	return textureCoords;
+    var textureCoords = [
+      0, 1.0*textureScale,
+      1.0*textureScale, 1.0*textureScale,
+      1.0*textureScale, 1.0,
+      0, 1.0,
+    ];
   }
+  return textureCoords;
+}
 
   var shaderProgram;
 
 
-  function handleLoadedTexture(texture) {
+function handleLoadedTexture(texture) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
