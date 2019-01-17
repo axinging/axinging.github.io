@@ -68,16 +68,16 @@
        
         var vertices;
 	var scale  =  1.0;
-	var Zeye = 5;
-	var left_at_any_z = left*(-Zeye)/near;
-	var right_at_any_z = right*(-Zeye)/near;
-	var bottom_at_any_z = bottom*(-Zeye)/near;
-	var topp_at_any_z = topp*(-Zeye)/near;
+	var zEye = 5;
+	var leftAtAnyZ = left*(-zEye)/near;
+	var rightAtAnyZ = right*(-zEye)/near;
+	var bottomAtAnyZ = bottom*(-zEye)/near;
+	var topAtAnyZ = topp*(-zEye)/near;
         vertices = [
-            left_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, -Zeye,
-            right_at_any_z*scale/2, topp_at_any_z*scale, -Zeye,
-            //left_at_any_z*scale, topp_at_any_z*scale, -Zeye,
+            leftAtAnyZ*scale, bottomAtAnyZ*scale, -zEye,
+            rightAtAnyZ*scale, bottomAtAnyZ*scale, -zEye,
+            rightAtAnyZ*scale/2, topAtAnyZ*scale, -zEye,
+            //leftAtAnyZ*scale, topAtAnyZ*scale, -zEye,
         ];
 	return vertices;
     }	
@@ -99,25 +99,25 @@
 
     function initVertices() {
 	var scale  =  1.0;
-	var Zeye = -0.5; //Can be any between 0.5, 100
-	var left_at_any_z = left*(Zeye)/-near;
-	var right_at_any_z = right*(Zeye)/-near;
-	var bottom_at_any_z = bottom*(Zeye)/-near;
-	var topp_at_any_z = topp*(Zeye)/-near;
+	var zEye = -0.5; //Can be any between 0.5, 100
+	var leftAtAnyZ = left*(zEye)/-near;
+	var rightAtAnyZ = right*(zEye)/-near;
+	var bottomAtAnyZ = bottom*(zEye)/-near;
+	var topAtAnyZ = topp*(zEye)/-near;
 
         vertices = [
-            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*0, topp_at_any_z*scale, Zeye
-            //right_at_any_z*scale, topp_at_any_z*scale, Zeye
-            //left_at_any_z*scale, topp_at_any_z*scale, Zeye,
+            leftAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+            rightAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+            rightAtAnyZ*0, topAtAnyZ*scale, zEye
+            //rightAtAnyZ*scale, topAtAnyZ*scale, zEye
+            //leftAtAnyZ*scale, topAtAnyZ*scale, zEye,
         ];
 		console.log("vertices = "+ vertices);
         var vertices2 = [
-            left_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*scale, bottom_at_any_z*scale, Zeye,
-            right_at_any_z*scale/2.0, topp_at_any_z*scale, Zeye
-            //left_at_any_z*scale, topp_at_any_z*scale, Zeye,
+            leftAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+            rightAtAnyZ*scale, bottomAtAnyZ*scale, zEye,
+            rightAtAnyZ*scale/2.0, topAtAnyZ*scale, zEye
+            //leftAtAnyZ*scale, topAtAnyZ*scale, zEye,
         ];
 		console.log("vertices2 = "+ vertices2);
 	return vertices;
